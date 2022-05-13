@@ -1,7 +1,7 @@
 export const initialUserState = {
   email: "",
   name: "",
-  isLoggedIn: true,
+  isLoggedIn: false,
 };
 
 export const userToken =
