@@ -1,5 +1,92 @@
-*, *::before, *::after{
+*,
+*::before,
+*::after {
   box-sizing: border-box;
   margin: 0;
   padding: 0;
+  font-family: "Roboto", sans-serif;
+  scroll-behavior: smooth;
+}
+
+:root {
+  --blue-1: #014f86;
+  --blue-2: #013a63;
+  --blue-3: #012a4a;
+  --white-100: #f8f9fa;
+  --gray-1: #e9ecef;
+  --gray-2: #dee2e6;
+  --black-1: #2b2c28;
+  --black-2: #131515;
+  --transition-1: 0.3s;
+  --gradient-color-1: #009ffd;
+  --gradient-color-2: #2a2a72;
+  --box-shadow-1: rgba(0, 0, 0, 0.5);
+}
+
+.welcome-info {
+  color: var(--gray-1);
+}
+
+.welcome-info h1 {
+  font-size: 2rem;
+}
+.welcome-info p {
+  font-size: 1.3rem;
+}
+
+.App {
+  background-color: var(--blue-2);
+  height: 100vh;
+}
+
+.container {
+  background-color: var(--white-100);
+  bottom: 0;
+  height: calc(100vh - 7rem);
+  border-top-right-radius: 4px;
+  border-top-left-radius: 4px;
+  position: absolute;
+  bottom: 0;
+  left: 2rem;
+  right: 2rem;
+  box-shadow: 4px -6px 8px 0 var(--box-shadow-1);
+}
+.btn {
+  margin: 0;
+  outline: none;
+  border: none;
+  border-radius: 4px;
+}
+
+.btn-small {
+  padding: 4px 8px;
+}
+
+.btn-big {
+  padding: 8px 16px;
+}
+
+.btn-primary {
+  background-color: var(--blue-1);
+  color: var(--white-100);
+}
+
+.btn-primary:hover {
+  filter: brightness(95%);
+  transition: filter var(--transition-1) ease-in-out;
+}
+
+.btn-secondary {
+  background-color: var(--gray-1);
+  color: var(--black-1);
+}
+
+.btn-secondary:hover {
+  background-color: var(--gray-2);
+  transition: background-color var(--transition-1) ease-in-out;
+}
+
+a {
+  text-decoration: none;
+  color: var(--white-100);
 }

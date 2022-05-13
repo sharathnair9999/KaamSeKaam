@@ -7,7 +7,7 @@ const RedirectLoggedInUser = ({ children }) => {
   const { userState } = useAuth();
   const location = useLocation();
   if (userState.isLoggedIn) {
-    return <Navigate to={"/"} replace state={{ from: location }} />;
+    return <Navigate to={"/tasks"} replace state={{ from: location }} />;
   }
   return children;
 };
@@ -43,8 +43,22 @@ const AllRoutes = () => {
           }
         />
       </Route>
-      <Route path="login" element={<Login />} />
-      <Route path="signup" element={<Signup />} />
+      <Route
+        path="login"
+        element={
+          <RedirectLoggedInUser>
+            <Login />
+          </RedirectLoggedInUser>
+        }
+      />
+      <Route
+        path="signup"
+        element={
+          <RedirectLoggedInUser>
+            <Signup />
+          </RedirectLoggedInUser>
+        }
+      />
     </Routes>
   );
 };
