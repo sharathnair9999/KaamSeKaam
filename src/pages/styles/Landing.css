@@ -1,9 +1,4 @@
 .landing-content-1 {
-  background: linear-gradient(
-    45deg,
-    var(--gradient-color-1),
-    var(--gradient-color-2)
-  );
   height: 100vh;
   color: var(--white-100);
   position: relative;

@@ -17,7 +17,7 @@ const Landing = () => {
       <div className="landing-content-1 flex-and-center w-100">
         <Link className="signup-btn flex-and-center gap-sm" to="/signup">
           <BiLogIn size="1.2rem" />
-          <span>Sign Up</span>
+          <span>Join Now</span>
         </Link>
         <div className="flex flex-col items-center justify-center gap-1 w-100">
           <h1 className="h1 px-1">Kaam Se Kaam</h1>
