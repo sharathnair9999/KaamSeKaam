@@ -1,27 +1,42 @@
-import {
-  createUserWithEmailAndPassword,
-  onAuthStateChanged,
-  signOut,
-  updateProfile,
-} from "firebase/auth";
-import React, { useState, useEffect } from "react";
+import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import React, { useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../contexts/user-context/user-context";
-import { constants } from "../helpers";
+import { constants, onChange } from "../helpers";
+import { InputField, SelectAvatar } from "../components";
+import "./styles/Auth.css";
+import { useNavigate } from "react-router-dom";
 
 const Signup = () => {
-  const { maleAvatar, femaleAvatar } = constants;
-  const [credentials, setCredentials] = useState({
-    email: "test@test2.com",
-    password: "testuser2",
+  const navigate = useNavigate();
+  const initialCredentialState = {
+    email: "",
+    password: "",
+    confirmPassword: "",
     displayName: "",
     photoURL: "",
-  });
+  };
+  const [isLoading, setIsLoading] = useState(false);
+  const [credentials, setCredentials] = useState(initialCredentialState);
 
   const { auth } = useAuth();
 
-  const signUpUser = (email, password, displayName, photoURL) => {
-    createUserWithEmailAndPassword(auth, email, password)
+  const signUpUser = (e) => {
+    e.preventDefault();
+    if (!credentials.photoURL) {
+      toast.warn("Select an Avatar to proceed");
+      return;
+    }
+    if (credentials.password !== credentials.confirmPassword) {
+      toast.warn("Password doesn't match");
+      return;
+    }
+    setIsLoading(true);
+    createUserWithEmailAndPassword(
+      auth,
+      credentials.email,
+      credentials.password
+    )
       .then(
         ({
           user: {
@@ -33,30 +48,102 @@ const Signup = () => {
       )
       .then((user) =>
         updateProfile(user, {
-          displayName,
-          photoURL,
+          displayName: credentials.displayName,
+          photoURL: credentials.photoURL,
         })
       )
+      .then(() => {
+        setIsLoading(false);
+        toast.success(`Welcome ${credentials.displayName}`);
+        setCredentials(initialCredentialState);
+        navigate("/login");
+      })
       .catch((error) => {
-        console.log(error.message);
+        setIsLoading(false);
+        toast.error(error.message.split(" ").slice(1, -1).join(" "));
       });
   };
 
-  useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      if (user) {
-        console.log("user details ", user.auth);
-      } else {
-        console.log("signed out");
-      }
-    });
-
-    return unsubscribe;
-  }, []);
-
   return (
     <div>
-    Signup
+      <section className="container-header">
+        <section className="flex-and-center gap-sm font-3xl">
+          <h1>Sign Up</h1>
+          <span className="app-name">{` | Kaam Se Kaam`}</span>
+        </section>
+      </section>
+      <div className="container">
+        <div className="login-container flex-and-center gap-1 w-100 flex-col">
+          <img
+            src={constants.imgUrls.auth}
+            alt="auth"
+            className="responsive-img auth-img border-rounded-sm"
+          />
+          <form onSubmit={signUpUser} className="fields">
+            <InputField
+              legend={"Name"}
+              type="text"
+              name="displayName"
+              value={credentials.displayName}
+              autoFocus
+              required
+              onChange={(e) => onChange(e, setCredentials)}
+            />
+            <InputField
+              legend={"Email"}
+              type="email"
+              name="email"
+              value={credentials.email}
+              required
+              onChange={(e) => onChange(e, setCredentials)}
+            />
+            <InputField
+              legend={"Password"}
+              type="password"
+              name="password"
+              required
+              value={credentials.password}
+              onChange={(e) => onChange(e, setCredentials)}
+            />
+            <InputField
+              legend={"Confirm Password"}
+              type="password"
+              name="confirmPassword"
+              required
+              value={credentials.confirmPassword}
+              onChange={(e) => onChange(e, setCredentials)}
+            />
+            <section className="flex-and-center gap-2">
+              <span> Select Avatar</span>
+              <SelectAvatar
+                credentials={credentials}
+                setCredentials={setCredentials}
+                id="male-avatar"
+                thisAvatar={constants.imgUrls.maleAvatar}
+              />
+              <SelectAvatar
+                credentials={credentials}
+                setCredentials={setCredentials}
+                id="female-avatar"
+                thisAvatar={constants.imgUrls.femaleAvatar}
+              />
+            </section>
+            <button type="submit" className="btn btn-primary w-100">
+              Sign Up
+            </button>
+            <p className="flex items-center justify-space-btw w-100">
+              <span>Existing User?</span>
+              <button
+                type="button"
+                onClick={() => navigate("/login")}
+                className="link"
+              >
+                {`${isLoading ? `Signing In` : `Log In`}`}
+              </button>
+            </p>
+          </form>
+        </div>
+      </div>
     </div>
   );
 };

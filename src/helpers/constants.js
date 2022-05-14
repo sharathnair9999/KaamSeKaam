@@ -6,6 +6,11 @@ export const constants = {
       "https://res.cloudinary.com/sharath-media-library/image/upload/v1652420275/pomodoro-assets/avatar_iphxdr.jpg",
     femaleAvatar:
       "https://res.cloudinary.com/sharath-media-library/image/upload/v1652420426/pomodoro-assets/girl-avatar_bbf7mv.jpg",
-      work : "https://res.cloudinary.com/sharath-media-library/image/upload/v1652428851/pomodoro-assets/work_pr560s.svg"
+    work: "https://res.cloudinary.com/sharath-media-library/image/upload/v1652428851/pomodoro-assets/work_pr560s.svg",
+    auth: "https://res.cloudinary.com/sharath-media-library/image/upload/v1652509100/pomodoro-assets/auth_e7cojc.jpg",
   },
+};
+
+export const onChange = (e, setter) => {
+  setter((data) => ({ ...data, [e.target.name]: e.target.value }));
 };
