@@ -7,5 +7,5 @@ export const initialUserState = {
   name: userDetails?.name || "",
   photoURL: userDetails?.photoURL || "",
   uid: userDetails?.uid || "",
-  isLoggedIn: userDetails?.name  ? true : false,
+  isLoggedIn: userDetails?.name ? true : false,
 };

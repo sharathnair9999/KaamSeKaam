@@ -24,7 +24,7 @@ const Login = () => {
     setIsLoading(true);
     try {
       const {
-        user: { displayName, photoURL, email },
+        user: { displayName, photoURL, email, uid },
       } = await signInWithEmailAndPassword(
         auth,
         credentials.email,
@@ -36,10 +36,17 @@ const Login = () => {
         name: displayName,
         photoURL,
         email,
+        uid,
       }));
       localStorage.setItem(
         "userDetails",
-        JSON.stringify({ name: displayName, photoURL, email, isLoggedIn: true })
+        JSON.stringify({
+          name: displayName,
+          photoURL,
+          email,
+          isLoggedIn: true,
+          uid,
+        })
       );
       setIsLoading(false);
     } catch (error) {
@@ -50,15 +57,26 @@ const Login = () => {
 
   const hiddenSignIn = async () => {
     try {
-      const result = await signInAnonymously(auth);
+      const {
+        user: { uid },
+      } = await signInAnonymously(auth);
       setUserState((state) => ({
         ...state,
         isLoggedIn: true,
         name: "Anonymous User",
         photoURL: constants.imgUrls.maleAvatar,
+        uid,
       }));
+      localStorage.setItem(
+        "userDetails",
+        JSON.stringify({
+          name: "Anonymous User",
+          photoURL: constants.imgUrls.maleAvatar,
+          isLoggedIn: true,
+          uid,
+        })
+      );
       toast.success("Signed In as Anonymous User");
-      console.log(result);
     } catch (error) {
       toast.error(error.message);
     }
