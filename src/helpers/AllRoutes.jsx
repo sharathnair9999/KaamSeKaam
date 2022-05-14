@@ -24,7 +24,14 @@ const RequireAuth = ({ children }) => {
 const AllRoutes = () => {
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
+      <Route
+        path="/"
+        element={
+          <RedirectLoggedInUser>
+            <Landing />
+          </RedirectLoggedInUser>
+        }
+      />
       <Route path="tasks">
         <Route
           index

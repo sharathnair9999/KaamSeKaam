@@ -1,0 +1,31 @@
+.input-field {
+  background-color: var(--all-white);
+  border-radius: 4px;
+  position: relative;
+  width: 100%;
+}
+
+.input-field input {
+  padding: 0.4rem 1rem;
+  font-size: 1rem;
+  background-color: transparent;
+  border: none;
+  outline: none;
+  width: 100%;
+}
+
+.input-field legend {
+  margin-left: 0.6rem;
+  padding: 0 4px;
+}
+
+.input-field .show-hide {
+  position: absolute;
+  top: 6px;
+  right: 4px;
+  background: transparent;
+  border: none;
+  outline: none;
+  color: var(--font-white-100);
+  font-size: 1.3rem;
+}

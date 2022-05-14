@@ -75,6 +75,7 @@
   outline: none;
   border: none;
   border-radius: 4px;
+  box-shadow: none;
 }
 
 .btn-small {
@@ -86,7 +87,7 @@
 }
 
 .btn-primary {
-  background-color: var(--blue-1);
+  background-color: var(--blue-1) !important;
   color: var(--white-100);
 }
 
@@ -108,4 +109,15 @@
 a {
   text-decoration: none;
   color: var(--white-100);
+}
+
+
+.link {
+  background-color: transparent;
+  border: none;
+  text-decoration: underline;
+  line-height: 1.2rem;
+  font-size: 1.2rem;
+  margin: 0;
+  padding: 0;
 }
