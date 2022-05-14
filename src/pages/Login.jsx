@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 import "./styles/Auth.css";
 import { constants, onChange } from "../helpers";
 import { InputField } from "../components";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Login = () => {
   const { auth, setUserState } = useAuth();
@@ -87,7 +87,7 @@ const Login = () => {
       <section className="container-header">
         <section className="flex-and-center gap-sm font-3xl">
           <h1>Log In</h1>
-          <span className="app-name">{` | Kaam Se Kaam`}</span>
+          <Link to={"/"} className="app-name">{` | Kaam Se Kaam`}</Link>
         </section>
       </section>
       <div className="container">
