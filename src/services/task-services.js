@@ -55,7 +55,6 @@ export const deleteTask = async (userId, taskId, dispatch) => {
     const collectionRef = collection(db, `userData/${userId}/tasks`);
     const docRef = doc(collectionRef, taskId);
     await deleteDoc(docRef);
-    dispatch({ type: "DELETE_PENDING_TASK", payload: taskId });
     toast.success(`Deleted Task Successfully`);
   } catch (error) {
     toast.error(error);

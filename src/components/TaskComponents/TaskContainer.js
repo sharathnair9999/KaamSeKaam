@@ -24,7 +24,7 @@ const TaskContainer = ({ tasks, isCompleted }) => {
         {unpinnedTasks.map((task, id) => (
           <TaskItem
             key={task.taskId}
-            sNo={id + 1}
+            sNo={id + pinnedTasks.length + 1}
             isCompleted={isCompleted}
             task={task}
           />
