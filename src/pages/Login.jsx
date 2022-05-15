@@ -1,15 +1,13 @@
 import React, { useState } from "react";
-
-import { signInWithEmailAndPassword, signInAnonymously } from "firebase/auth";
 import { useAuth } from "../contexts/user-context/user-context";
-import { toast } from "react-toastify";
 import "./styles/Auth.css";
 import { constants, onChange } from "../helpers";
 import { InputField } from "../components";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { hiddenSignIn, signInUser } from "../services";
 
 const Login = () => {
-  const { auth, setUserState } = useAuth();
+  const { setUserState } = useAuth();
   const navigate = useNavigate();
   const initialCredentialState = {
     email: "",
@@ -19,75 +17,12 @@ const Login = () => {
   const [credentials, setCredentials] = useState(initialCredentialState);
   const [isLoading, setIsLoading] = useState(false);
 
-  const signInUser = async (e) => {
-    e.preventDefault();
-    setIsLoading(true);
-    try {
-      const {
-        user: { displayName, photoURL, email, uid },
-      } = await signInWithEmailAndPassword(
-        auth,
-        credentials.email,
-        credentials.password
-      );
-      setUserState((state) => ({
-        ...state,
-        isLoggedIn: true,
-        name: displayName,
-        photoURL,
-        email,
-        uid,
-      }));
-      localStorage.setItem(
-        "userDetails",
-        JSON.stringify({
-          name: displayName,
-          photoURL,
-          email,
-          isLoggedIn: true,
-          uid,
-        })
-      );
-      setIsLoading(false);
-    } catch (error) {
-      setIsLoading(false);
-      toast.error(error.message);
-    }
-  };
-
-  const hiddenSignIn = async () => {
-    try {
-      const {
-        user: { uid },
-      } = await signInAnonymously(auth);
-      setUserState((state) => ({
-        ...state,
-        isLoggedIn: true,
-        name: "Anonymous User",
-        photoURL: constants.imgUrls.maleAvatar,
-        uid,
-      }));
-      localStorage.setItem(
-        "userDetails",
-        JSON.stringify({
-          name: "Anonymous User",
-          photoURL: constants.imgUrls.maleAvatar,
-          isLoggedIn: true,
-          uid,
-        })
-      );
-      toast.success("Signed In as Anonymous User");
-    } catch (error) {
-      toast.error(error.message);
-    }
-  };
-
   return (
     <div>
       <section className="container-header">
         <section className="flex-and-center gap-sm font-3xl">
           <h1>Log In</h1>
-          <span className="app-name">{` | Kaam Se Kaam`}</span>
+          <Link to={"/"} className="app-name">{` | Kaam Se Kaam`}</Link>
         </section>
       </section>
       <div className="container">
@@ -98,7 +33,12 @@ const Login = () => {
             className="responsive-img auth-img border-rounded-sm"
           />
           <div className="flex-and-center gap-1 flex-col flex-grow-1 w-100">
-            <form onSubmit={signInUser} className="fields">
+            <form
+              onSubmit={(e) =>
+                signInUser(e, setIsLoading, setUserState, credentials)
+              }
+              className="fields"
+            >
               <InputField
                 legend={"Email"}
                 type="email"
@@ -120,7 +60,7 @@ const Login = () => {
               </button>
               <button
                 className="btn btn-secondary w-100"
-                onClick={() => hiddenSignIn()}
+                onClick={() => hiddenSignIn(setUserState)}
                 type="button"
               >
                 Sign In Anonymously

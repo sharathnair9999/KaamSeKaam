@@ -1,7 +1,6 @@
 .landing-content-1 {
   height: 100vh;
   color: var(--white-100);
-  position: relative;
 }
 
 .landing-content-1 h1 {
@@ -39,14 +38,18 @@
 }
 
 .signup-btn {
-  position: fixed;
-  top: 2rem;
-  right: 1rem;
   background-color: var(--gradient-color-2);
   padding: 8px 16px;
   border-radius: 4px;
   font-size: 1.3rem;
   color: var(--white-100);
+  margin-left: auto;
+}
+
+.landing-content-1 .signup-btn {
+  position: fixed;
+  top: 2rem;
+  right: 1rem;
 }
 
 .signup-btn:hover {

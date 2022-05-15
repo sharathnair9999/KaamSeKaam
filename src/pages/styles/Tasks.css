@@ -1,11 +1,32 @@
-.container-header .avatar{
+.container-header .avatar {
   padding: 0;
   margin: 0;
   max-width: 3rem;
 }
 
-.login-container.container-header{
+.login-container.container-header {
   flex-direction: row;
   justify-content: flex-start;
   align-items: center;
+}
+
+.add-task {
+  position: absolute;
+  left: 1rem;
+  top: 10px;
+  background: linear-gradient(
+    45deg,
+    var(--gradient-color-1),
+    var(--gradient-color-2)
+  );
+  color: var(--white-100);
+  padding: 5px 10px;
+  margin: 0;
+}
+
+.all-tasks-container {
+  padding-top: 3rem;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 1rem;
 }

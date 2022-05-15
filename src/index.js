@@ -4,14 +4,17 @@ import App from "./App";
 import "./App.css";
 import { AuthProvider } from "./contexts/user-context/user-context";
 import { BrowserRouter as Router } from "react-router-dom";
+import { TaskProvider } from "./contexts";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
-    <AuthProvider>
-      <Router>
-        <App />
-      </Router>
-    </AuthProvider>
+    <Router>
+      <AuthProvider>
+        <TaskProvider>
+          <App />
+        </TaskProvider>
+      </AuthProvider>
+    </Router>
   </React.StrictMode>
 );

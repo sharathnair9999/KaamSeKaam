@@ -5,7 +5,7 @@ import { useAuth } from "../contexts/user-context/user-context";
 import { constants, onChange } from "../helpers";
 import { InputField, SelectAvatar } from "../components";
 import "./styles/Auth.css";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Signup = () => {
   const navigate = useNavigate();
@@ -69,7 +69,7 @@ const Signup = () => {
       <section className="container-header">
         <section className="flex-and-center gap-sm font-3xl">
           <h1>Sign Up</h1>
-          <span className="app-name">{` | Kaam Se Kaam`}</span>
+          <Link to={"/"} className="app-name">{` | Kaam Se Kaam`}</Link>
         </section>
       </section>
       <div className="container">
