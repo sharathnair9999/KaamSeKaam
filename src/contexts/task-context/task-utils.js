@@ -2,12 +2,12 @@ export const initialTaskState = {
   pendingTasks: [],
   completedTasks: [],
   currentTask: {
-    taskId: null,
-    taskName: null,
-    taskDescription: null,
-    taskDuration: null,
-    longBreak: null,
-    shortBreak: null,
+    taskId: "",
+    taskName: "",
+    taskDescription: "",
+    taskDuration: "",
+    longBreak: "",
+    shortBreak: "",
   },
 };
 
