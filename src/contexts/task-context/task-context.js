@@ -6,7 +6,7 @@ const TaskContext = createContext();
 
 const TaskProvider = ({ children }) => {
   const [taskState, taskDispatch] = useReducer(taskReducer, initialTaskState);
-  const { auth, userState } = useAuth();
+  const { auth } = useAuth();
 
   const value = { taskState, taskDispatch, auth };
   return <TaskContext.Provider value={value}>{children}</TaskContext.Provider>;
