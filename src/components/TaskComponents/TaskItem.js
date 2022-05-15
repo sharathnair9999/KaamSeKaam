@@ -31,11 +31,7 @@ const TaskItem = ({ task, sNo, isCompleted }) => {
       </section>
       <section className="task-actions">
         <button onClick={() => pinTaskHandler(uid, task)}>
-          {task.isPinned ? (
-            <BsPinAngleFill size={"1.1rem"} />
-          ) : (
-            <BsPinAngle size={"1.1rem"} />
-          )}
+          {task.isPinned ? <BsPinAngleFill /> : <BsPinAngle />}
         </button>
         {!isCompleted && (
           <button
@@ -43,13 +39,12 @@ const TaskItem = ({ task, sNo, isCompleted }) => {
               setIsComponentVisible(!isComponentVisible);
             }}
           >
-            {<BsFillPencilFill size={"1.1rem"} />}
+            {<BsFillPencilFill />}
           </button>
         )}
         <button>
           {
             <BsFillTrashFill
-              size={"1.1rem"}
               onClick={() => deleteTask(uid, task.taskId, taskDispatch)}
             />
           }
