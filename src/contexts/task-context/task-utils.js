@@ -1,7 +1,6 @@
 export const initialTaskState = {
   pendingTasks: [],
   completedTasks: [],
-  isLoading: false,
   currentTask: {
     taskId: "",
     taskName: "",
@@ -17,11 +16,6 @@ export const initialTaskState = {
 export const taskReducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
-    case "LOADING_TASKS":
-      return {
-        ...state,
-        isLoading: payload,
-      };
     case "GET_PENDING_TASKS":
       return { ...state, pendingTasks: payload };
     case "GET_COMPLETED_TASKS":

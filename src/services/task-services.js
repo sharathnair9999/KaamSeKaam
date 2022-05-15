@@ -12,8 +12,6 @@ import { db } from "../firebase/firebase-config";
 
 export const getUserTasks = (userId, dispatch) => {
   try {
-    console.log("getting");
-    dispatch({ type: "LOADING_TASKS", payload: true });
     const querySnapshot = query(collection(db, `userData/${userId}/tasks`));
 
     const unsubscribe = onSnapshot(querySnapshot, (snapshot) => {
@@ -29,10 +27,8 @@ export const getUserTasks = (userId, dispatch) => {
         dispatch({ type: "GET_COMPLETED_TASKS", payload: completedTasks });
       });
     });
-    dispatch({ type: "LOADING_TASKS", payload: false });
     return unsubscribe;
   } catch (error) {
-    dispatch({ type: "LOADING_TASKS", payload: false });
     toast.error("Could not retrieve your Tasks. Please try later!");
   }
 };
@@ -90,12 +86,7 @@ export const pinTaskHandler = async (userId, task) => {
     const collectionRef = collection(db, `userData/${userId}/tasks`);
     const docRef = doc(collectionRef, task.taskId);
     setDoc(docRef, {
-      taskName: task.taskName,
-      taskDescription: task.taskDescription,
-      taskDuration: task.taskDuration,
-      longBreak: task.longBreak,
-      shortBreak: task.shortBreak,
-      isCompleted: false,
+      ...task,
       isPinned: !task.isPinned,
     });
     toast.success(
