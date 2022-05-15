@@ -20,10 +20,11 @@ const Tasks = () => {
 
   const {
     taskState: { pendingTasks, completedTasks },
+    taskDispatch,
   } = useTask();
 
   useEffect(() => {
-    getUserTasks(uid);
+    getUserTasks(uid, taskDispatch);
   }, []);
 
   return (
@@ -36,7 +37,7 @@ const Tasks = () => {
         </section>
         <button
           className="signup-btn flex-and-center gap-sm"
-          onClick={() => logoutUser(setUserState)}
+          onClick={() => logoutUser(setUserState, taskDispatch)}
         >
           <BiLogOut size="1.2rem" />
           <span>Sign Out</span>
@@ -50,7 +51,7 @@ const Tasks = () => {
           <span>Add New Task</span>
           <IoIosAddCircleOutline size={"2rem"} />
         </button>
-        <div className="flex-and-center gap-2">
+        <div className="all-tasks-container">
           <TaskContainer tasks={pendingTasks} />
           <TaskContainer tasks={completedTasks} isCompleted />
         </div>

@@ -1,6 +1,7 @@
 export const initialTaskState = {
   pendingTasks: [],
   completedTasks: [],
+  isLoading: false,
   currentTask: {
     taskId: "",
     taskName: "",
@@ -8,18 +9,29 @@ export const initialTaskState = {
     taskDuration: "",
     longBreak: "",
     shortBreak: "",
+    isCompleted: false,
+    isPinned: false,
   },
 };
 
 export const taskReducer = (state, action) => {
   const { type, payload } = action;
   switch (type) {
+    case "LOADING_TASKS":
+      return {
+        ...state,
+        isLoading: payload,
+      };
     case "GET_PENDING_TASKS":
       return { ...state, pendingTasks: payload };
     case "GET_COMPLETED_TASKS":
       return { ...state, completedTasks: payload };
     case "DELETE_PENDING_TASK":
-      let pendingTaskToDelete = payload;
+      let pendingTaskToDeleteID = payload;
+      let pendingTaskToDelete = state.pendingTasks.find(
+        (task) => task.taskId,
+        pendingTaskToDeleteID
+      );
       let newPendingTasks = state.pendingTasks.filter(
         (task) => task.taskId !== pendingTaskToDelete.taskId
       );
@@ -62,6 +74,8 @@ export const taskReducer = (state, action) => {
         completedTasks: newCompletedTasks3,
         pendingTasks: newPendingTasks3,
       };
+    case "LOGOUT_USER":
+      return initialTaskState;
     default:
       return state;
   }
