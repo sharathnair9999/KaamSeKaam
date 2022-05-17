@@ -3,8 +3,10 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   onSnapshot,
   query,
+  serverTimestamp,
   setDoc,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
@@ -43,6 +45,7 @@ export const addTask = async (userId, currTaskState) => {
       longBreak: Number(currTaskState.longBreak),
       isCompleted: Boolean(false),
       isPinned: Boolean(currTaskState.isPinned),
+      timestamp: serverTimestamp(),
     });
     toast.success(`New Task Added Successfully`);
   } catch (e) {
@@ -50,11 +53,19 @@ export const addTask = async (userId, currTaskState) => {
   }
 };
 
-export const deleteTask = async (userId, taskId, dispatch) => {
+export const deleteTask = async (
+  userId,
+  taskId,
+  dispatch,
+  isCompleted,
+  isPending
+) => {
   try {
     const collectionRef = collection(db, `userData/${userId}/tasks`);
     const docRef = doc(collectionRef, taskId);
     await deleteDoc(docRef);
+    isPending && dispatch({ type: "DELETE_PENDING_TASK", payload: taskId });
+    isCompleted && dispatch({ type: "DELETE_COMPLETED_TASK", payload: taskId });
     toast.success(`Deleted Task Successfully`);
   } catch (error) {
     toast.error(error);
@@ -73,6 +84,7 @@ export const updateTask = async (userId, task) => {
       shortBreak: task.shortBreak,
       isCompleted: false,
       isPinned: task.isPinned,
+      timestamp: serverTimestamp(),
     });
     toast.success("Updated Task Successfully");
   } catch (error) {
@@ -97,5 +109,46 @@ export const pinTaskHandler = async (userId, task) => {
     );
   } catch (error) {
     toast.error(error);
+  }
+};
+
+export const getSingleTask = async (userId, taskId, taskDispatch) => {
+  try {
+    taskDispatch({ type: "SINGLE_TASK_LOADING", payload: true });
+    const collectionRef = collection(db, `userData/${userId}/tasks`);
+    const docRef = doc(collectionRef, taskId);
+    const docSnap = await getDoc(docRef);
+    taskDispatch({ type: "SINGLE_TASK_LOADING", payload: false });
+    if (docSnap.exists()) {
+      const currentTask = docSnap.data();
+      const currentId = docSnap.id;
+      taskDispatch({
+        type: "SINGLE_TASK",
+        payload: { ...currentTask, taskId: currentId },
+      });
+    } else {
+      toast.error("Doesn't seem there is not them, but you can ever felt that");
+    }
+  } catch (error) {
+    taskDispatch({ type: "SINGLE_TASK_LOADING", payload: false });
+    toast.error(error);
+  }
+};
+
+export const completeTaskHandler = async (userId, task, isCompleted) => {
+  try {
+    const collectionRef = collection(db, `userData/${userId}/tasks`);
+    const docRef = doc(collectionRef, task.taskId);
+    setDoc(docRef, {
+      ...task,
+      isCompleted: isCompleted,
+    });
+    toast.success(
+      `${
+        isCompleted ? "Completed Task Successfully" : "Task not completed yet"
+      }`
+    );
+  } catch (error) {
+    toast.error("Could not complete the action");
   }
 };

@@ -10,7 +10,9 @@ export const initialTaskState = {
     shortBreak: "",
     isCompleted: false,
     isPinned: false,
+    timestamp: null,
   },
+  isLoading: false,
 };
 
 export const taskReducer = (state, action) => {
@@ -21,11 +23,7 @@ export const taskReducer = (state, action) => {
     case "GET_COMPLETED_TASKS":
       return { ...state, completedTasks: payload };
     case "DELETE_PENDING_TASK":
-      let pendingTaskToDeleteID = payload;
-      let pendingTaskToDelete = state.pendingTasks.find(
-        (task) => task.taskId,
-        pendingTaskToDeleteID
-      );
+      let pendingTaskToDelete = payload;
       let newPendingTasks = state.pendingTasks.filter(
         (task) => task.taskId !== pendingTaskToDelete.taskId
       );
@@ -67,6 +65,16 @@ export const taskReducer = (state, action) => {
         ...state,
         completedTasks: newCompletedTasks3,
         pendingTasks: newPendingTasks3,
+      };
+    case "SINGLE_TASK":
+      return {
+        ...state,
+        currentTask: payload,
+      };
+    case "SINGLE_TASK_LOADING":
+      return {
+        ...state,
+        isLoading: payload,
       };
     case "LOGOUT_USER":
       return initialTaskState;

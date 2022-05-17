@@ -5,6 +5,8 @@ import {
   deleteTask,
   updateTask,
   pinTaskHandler,
+  getSingleTask,
+  completeTaskHandler,
 } from "./task-services";
 
 export {
@@ -16,4 +18,6 @@ export {
   deleteTask,
   updateTask,
   pinTaskHandler,
+  getSingleTask,
+  completeTaskHandler,
 };
