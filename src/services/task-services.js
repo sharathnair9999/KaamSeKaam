@@ -10,6 +10,7 @@ import {
   setDoc,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { taskActions } from "../contexts/task-context/task-actions";
 import { db } from "../firebase/firebase-config";
 
 export const getUserTasks = (userId, dispatch) => {
@@ -25,8 +26,14 @@ export const getUserTasks = (userId, dispatch) => {
         });
         const completedTasks = tasks.filter((task) => task.isCompleted);
         const pendingTasks = tasks.filter((task) => !task.isCompleted);
-        dispatch({ type: "GET_PENDING_TASKS", payload: pendingTasks });
-        dispatch({ type: "GET_COMPLETED_TASKS", payload: completedTasks });
+        dispatch({
+          type: taskActions.GET_PENDING_TASKS,
+          payload: pendingTasks,
+        });
+        dispatch({
+          type: taskActions.GET_COMPLETED_TASKS,
+          payload: completedTasks,
+        });
       });
     });
     return unsubscribe;
@@ -64,8 +71,10 @@ export const deleteTask = async (
     const collectionRef = collection(db, `userData/${userId}/tasks`);
     const docRef = doc(collectionRef, taskId);
     await deleteDoc(docRef);
-    isPending && dispatch({ type: "DELETE_PENDING_TASK", payload: taskId });
-    isCompleted && dispatch({ type: "DELETE_COMPLETED_TASK", payload: taskId });
+    isPending &&
+      dispatch({ type: taskActions.DELETE_PENDING_TASK, payload: taskId });
+    isCompleted &&
+      dispatch({ type: taskActions.DELETE_COMPLETED_TASK, payload: taskId });
     toast.success(`Deleted Task Successfully`);
   } catch (error) {
     toast.error(error);
@@ -111,23 +120,23 @@ export const pinTaskHandler = async (userId, task) => {
 
 export const getSingleTask = async (userId, taskId, taskDispatch) => {
   try {
-    taskDispatch({ type: "SINGLE_TASK_LOADING", payload: true });
+    taskDispatch({ type: taskActions.SINGLE_TASK_LOADING, payload: true });
     const collectionRef = collection(db, `userData/${userId}/tasks`);
     const docRef = doc(collectionRef, taskId);
     const docSnap = await getDoc(docRef);
-    taskDispatch({ type: "SINGLE_TASK_LOADING", payload: false });
+    taskDispatch({ type: taskActions.SINGLE_TASK_LOADING, payload: false });
     if (docSnap.exists()) {
       const currentTask = docSnap.data();
       const currentId = docSnap.id;
       taskDispatch({
-        type: "SINGLE_TASK",
+        type: taskActions.SINGLE_TASK,
         payload: { ...currentTask, taskId: currentId },
       });
     } else {
       toast.error("Doesn't seem there is not them, but you can ever felt that");
     }
   } catch (error) {
-    taskDispatch({ type: "SINGLE_TASK_LOADING", payload: false });
+    taskDispatch({ type: taskActions.SINGLE_TASK_LOADING, payload: false });
     toast.error(error);
   }
 };

@@ -4,6 +4,7 @@ import {
   signOut,
 } from "firebase/auth";
 import { toast } from "react-toastify";
+import { taskActions } from "../contexts/task-context/task-actions";
 import { auth } from "../firebase/firebase-config";
 import { constants } from "../helpers";
 
@@ -80,5 +81,5 @@ export const logoutUser = async (userSetter, taskDispatch) => {
     uid: "",
     photoURL: "",
   });
-  taskDispatch({ type: "LOGOUT_USER" });
+  taskDispatch({ type: taskActions.LOGOUT_USER });
 };
