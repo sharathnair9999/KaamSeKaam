@@ -45,7 +45,7 @@ export const addTask = async (userId, currTaskState) => {
       longBreak: Number(currTaskState.longBreak),
       isCompleted: Boolean(false),
       isPinned: Boolean(currTaskState.isPinned),
-      timestamp: serverTimestamp(),
+      createdTime: serverTimestamp(),
     });
     toast.success(`New Task Added Successfully`);
   } catch (e) {
@@ -77,14 +77,11 @@ export const updateTask = async (userId, task) => {
     const collectionRef = collection(db, `userData/${userId}/tasks`);
     const docRef = doc(collectionRef, task.taskId);
     setDoc(docRef, {
-      taskName: task.taskName,
-      taskDescription: task.taskDescription,
-      taskDuration: task.taskDuration,
-      longBreak: task.longBreak,
-      shortBreak: task.shortBreak,
-      isCompleted: false,
-      isPinned: task.isPinned,
-      timestamp: serverTimestamp(),
+      ...task,
+      taskDuration: Number(task.taskDuration),
+      longBreak: Number(task.longBreak),
+      shortBreak: Number(task.shortBreak),
+      updatedOn: serverTimestamp(),
     });
     toast.success("Updated Task Successfully");
   } catch (error) {
@@ -98,7 +95,7 @@ export const pinTaskHandler = async (userId, task) => {
     const docRef = doc(collectionRef, task.taskId);
     setDoc(docRef, {
       ...task,
-      isPinned: !task.isPinned,
+      isPinned: Boolean(!task.isPinned),
     });
     toast.success(
       `${
@@ -141,7 +138,8 @@ export const completeTaskHandler = async (userId, task, isCompleted) => {
     const docRef = doc(collectionRef, task.taskId);
     setDoc(docRef, {
       ...task,
-      isCompleted: isCompleted,
+      isCompleted: Boolean(isCompleted),
+      completedOn: isCompleted ? serverTimestamp() : null,
     });
     toast.success(
       `${

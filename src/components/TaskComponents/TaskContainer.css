@@ -26,6 +26,7 @@
 .task-item {
   display: flex;
   justify-content: center;
+  text-transform: capitalize;
   width: 100%;
   align-items: center;
   gap: 1rem;
@@ -40,6 +41,11 @@
 
 .task-item .task-text {
   flex-grow: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: flex-start;
+  gap: 4px;
+  flex-direction: column;
 }
 
 .task-title {
@@ -70,14 +76,14 @@
     45deg,
     var(--gradient-color-1),
     var(--gradient-color-2)
-    );
-    color: var(--white-100);
-  }
-  
-  .modal-wrapper {
-    position: absolute;
-    top: 0;
-    left: 0;
+  );
+  color: var(--white-100);
+}
+
+.modal-wrapper {
+  position: absolute;
+  top: 0;
+  left: 0;
   right: 0;
   bottom: 0;
   background-color: rgba(0, 0, 0, 0.3);
@@ -107,6 +113,10 @@
   box-shadow: 2px 8px 20px 0 rgba(0, 0, 0, 0.3);
 }
 
+.task-timer-container {
+  max-width: 20rem;
+}
+
 @media screen and (max-width: 768px) {
   .tasks-container h2 {
     font-size: 0.8rem;
@@ -115,7 +125,7 @@
     flex-wrap: wrap;
     padding: 4px;
   }
-  
+
   .task-title {
     font-size: 90%;
   }
