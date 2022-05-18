@@ -7,6 +7,7 @@ import TaskModal from "../components/TaskComponents/TaskModal";
 import { useClickOutside } from "../custom-hooks";
 import { IoIosAddCircleOutline } from "react-icons/io";
 import { getUserTasks } from "../services";
+import { Droppable } from "react-beautiful-dnd";
 
 const Tasks = () => {
   const { ref, isComponentVisible, setIsComponentVisible } =
@@ -37,8 +38,22 @@ const Tasks = () => {
           <IoIosAddCircleOutline size={"2rem"} />
         </button>
         <div className="all-tasks-container">
-          <TaskContainer tasks={pendingTasks} isPending />
-          <TaskContainer tasks={completedTasks} isCompleted />
+          <Droppable droppableId="pendingTasks">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <TaskContainer tasks={pendingTasks} isPending />
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+          <Droppable droppableId="completedTasks">
+            {(provided) => (
+              <div ref={provided.innerRef} {...provided.droppableProps}>
+                <TaskContainer tasks={completedTasks} isCompleted />
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </div>
         <TaskModal
           isComponentVisible={isComponentVisible}

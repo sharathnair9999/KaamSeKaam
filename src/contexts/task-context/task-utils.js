@@ -41,31 +41,6 @@ export const taskReducer = (state, action) => {
           task.taskId === payload.taskId ? payload : task
         ),
       };
-    case taskActions.MOVE_TO_COMPLETED_TASKS:
-      let taskToMoveToCompleted = payload;
-      let newCompletedTasks2 = state.completedTasks.unshift(
-        taskToMoveToCompleted
-      );
-      let newPendingTasks2 = state.pendingTasks.filter(
-        (task) => taskToMoveToCompleted.taskId !== task.taskId
-      );
-      return {
-        ...state,
-        completedTasks: newCompletedTasks2,
-        pendingTasks: newPendingTasks2,
-      };
-
-    case taskActions.MOVE_TO_PENDING_TASKS:
-      let taskToMoveToPending = payload;
-      let newPendingTasks3 = state.completedTasks.unshift(taskToMoveToPending);
-      let newCompletedTasks3 = state.pendingTasks.filter(
-        (task) => taskToMoveToPending.taskId !== task.taskId
-      );
-      return {
-        ...state,
-        completedTasks: newCompletedTasks3,
-        pendingTasks: newPendingTasks3,
-      };
     case taskActions.SINGLE_TASK:
       return {
         ...state,
