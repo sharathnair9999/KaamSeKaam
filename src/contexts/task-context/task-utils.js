@@ -10,7 +10,7 @@ export const initialTaskState = {
     shortBreak: "",
     isCompleted: false,
     isPinned: false,
-    timestamp: null,
+    createdTime: null,
   },
   isLoading: false,
 };
@@ -23,11 +23,15 @@ export const taskReducer = (state, action) => {
     case "GET_COMPLETED_TASKS":
       return { ...state, completedTasks: payload };
     case "DELETE_PENDING_TASK":
-      let pendingTaskToDelete = payload;
       let newPendingTasks = state.pendingTasks.filter(
-        (task) => task.taskId !== pendingTaskToDelete.taskId
+        (task) => task.taskId !== payload
       );
       return { ...state, pendingTasks: newPendingTasks };
+    case "DELETE_COMPLETED_TASK":
+      let newCompletedTasks = state.completedTasks.filter(
+        (task) => task.taskId !== payload
+      );
+      return { ...state, completedTasks: newCompletedTasks };
     case "UPDATE_PENDING_TASK":
       return {
         ...state,
@@ -35,12 +39,6 @@ export const taskReducer = (state, action) => {
           task.taskId === payload.taskId ? payload : task
         ),
       };
-    case "DELETE_COMPLETED_TASK":
-      let completedTaskToDelete = payload;
-      let newCompletedTasks = state.completedTasks.filter(
-        (task) => task.taskId !== completedTaskToDelete.taskId
-      );
-      return { ...state, completedTasks: newCompletedTasks };
     case "MOVE_TO_COMPLETED_TASKS":
       let taskToMoveToCompleted = payload;
       let newCompletedTasks2 = state.completedTasks.unshift(
