@@ -12,7 +12,7 @@ import { deleteTask, pinTaskHandler } from "../../services";
 import { useAuth } from "../../contexts/user-context/user-context";
 import { useTask } from "../../contexts";
 
-const TaskItem = ({ task, sNo, isCompleted }) => {
+const TaskItem = ({ task, sNo, isCompleted, isPending }) => {
   const navigate = useNavigate();
   const { ref, isComponentVisible, setIsComponentVisible } =
     useClickOutside(false);
@@ -21,18 +21,36 @@ const TaskItem = ({ task, sNo, isCompleted }) => {
   } = useAuth();
 
   const { taskDispatch } = useTask();
+  const formattedCreatedTime = new Date(
+    task.createdTime?.seconds * 1000
+  ).toLocaleString();
+  const formattedCompletedTime = new Date(
+    task.completedOn?.seconds * 1000
+  ).toLocaleString();
 
   return (
     <div ref={ref} className="task-item">
       <span className="serial-no">{sNo}</span>
-      <section onClick={() => navigate(`/tasks/123`)} className="task-text">
+      <section
+        onClick={() => navigate(`/tasks/${task.taskId}`)}
+        className="task-text"
+      >
         <p className="task-title">{task.taskName}</p>
-        <p className="task-description">{task.taskDescription}</p>
+        <span>{`Duration : ${task.taskDuration} min.`}</span>
+
+        {!task.isCompleted && (
+          <p className="task-description">{`Created On :  ${formattedCreatedTime}`}</p>
+        )}
+        {task.isCompleted && (
+          <p className="task-description">{`Completed On : ${formattedCompletedTime}`}</p>
+        )}
       </section>
       <section className="task-actions">
-        <button onClick={() => pinTaskHandler(uid, task)}>
-          {task.isPinned ? <BsPinAngleFill /> : <BsPinAngle />}
-        </button>
+        {!isCompleted && (
+          <button onClick={() => pinTaskHandler(uid, task)}>
+            {task.isPinned ? <BsPinAngleFill /> : <BsPinAngle />}
+          </button>
+        )}
         {!isCompleted && (
           <button
             onClick={() => {
@@ -45,7 +63,15 @@ const TaskItem = ({ task, sNo, isCompleted }) => {
         <button>
           {
             <BsFillTrashFill
-              onClick={() => deleteTask(uid, task.taskId, taskDispatch)}
+              onClick={() =>
+                deleteTask(
+                  uid,
+                  task.taskId,
+                  taskDispatch,
+                  isCompleted,
+                  isPending
+                )
+              }
             />
           }
         </button>
