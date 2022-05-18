@@ -1,21 +1,19 @@
 import React, { useEffect } from "react";
 import { useAuth } from "../contexts/user-context/user-context";
-import { BiLogOut } from "react-icons/bi";
 import "./styles/Tasks.css";
-import { TaskContainer } from "../components";
+import { TaskContainer, UserInfo } from "../components";
 import { useTask } from "../contexts";
 import TaskModal from "../components/TaskComponents/TaskModal";
 import { useClickOutside } from "../custom-hooks";
 import { IoIosAddCircleOutline } from "react-icons/io";
-import { getUserTasks, logoutUser } from "../services";
+import { getUserTasks } from "../services";
 
 const Tasks = () => {
   const { ref, isComponentVisible, setIsComponentVisible } =
     useClickOutside(false);
 
   const {
-    setUserState,
-    userState: { name, photoURL, uid },
+    userState: { uid },
   } = useAuth();
 
   const {
@@ -29,20 +27,7 @@ const Tasks = () => {
 
   return (
     <div>
-      <section className="container-header login-container gap-sm">
-        <img src={photoURL} alt="avatar" className="avatar responsive-img" />
-        <section className="user-summary">
-          <h1>{`Hi ${name[0].toUpperCase() + name.slice(1)}`}</h1>
-          <p>{`3 pending Tasks, 2 completed tasks`}</p>
-        </section>
-        <button
-          className="signup-btn flex-and-center gap-sm"
-          onClick={() => logoutUser(setUserState, taskDispatch)}
-        >
-          <BiLogOut size="1.2rem" />
-          <span>Sign Out</span>
-        </button>
-      </section>
+      <UserInfo />
       <div ref={ref} className="container all-tasks">
         <button
           onClick={() => setIsComponentVisible(!isComponentVisible)}
@@ -52,7 +37,7 @@ const Tasks = () => {
           <IoIosAddCircleOutline size={"2rem"} />
         </button>
         <div className="all-tasks-container">
-          <TaskContainer tasks={pendingTasks} />
+          <TaskContainer tasks={pendingTasks} isPending />
           <TaskContainer tasks={completedTasks} isCompleted />
         </div>
         <TaskModal

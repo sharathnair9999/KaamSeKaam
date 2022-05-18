@@ -70,6 +70,7 @@
   border-top-left-radius: 8px;
   border-top-right-radius: 8px;
   box-shadow: 4px -4px 8px 0 var(--box-shadow-1);
+  overflow-y: auto;
 }
 
 .btn {
@@ -121,6 +122,29 @@ a {
   font-size: 1.2rem;
   margin: 0;
   padding: 0;
+}
+
+.text-capitalize {
+  text-transform: capitalize;
+}
+
+.text-success {
+  color: var(--success-600);
+}
+.text-danger {
+  color: var(--danger-300);
+}
+
+.line-through {
+  text-decoration: line-through;
+}
+
+.letter-space-xsm {
+  letter-spacing: 1px;
+}
+
+.inline-flex{
+  display: inline-flex;
 }
 
 @media screen and (max-width: 768px) {

@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { InputField } from "../../components";
-import { useTask } from "../../contexts";
 import { useAuth } from "../../contexts/user-context/user-context";
 import { onChange } from "../../helpers";
 import { addTask, updateTask } from "../../services";
@@ -11,13 +10,18 @@ const TaskModal = ({
   existingTask,
 }) => {
   const {
-    taskState: { currentTask },
-  } = useTask();
-  const {
     userState: { uid },
   } = useAuth();
 
-  const initialTaskState = existingTask ? task : currentTask;
+  const newTask = {
+    taskName: "",
+    taskDescription: "",
+    taskDuration: "",
+    longBreak: "",
+    shortBreak: "",
+  };
+
+  const initialTaskState = existingTask ? task : newTask;
   const [currTaskState, setCurrTaskState] = useState(initialTaskState);
 
   const handleSubmit = (e) => {

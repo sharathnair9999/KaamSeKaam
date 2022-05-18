@@ -1,0 +1,12 @@
+.single-task-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1rem;
+}
+
+
+.task-timer-container{
+  flex-grow: 1;
+  min-width: 20rem;
+}

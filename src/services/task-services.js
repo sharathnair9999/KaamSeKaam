@@ -3,11 +3,14 @@ import {
   collection,
   deleteDoc,
   doc,
+  getDoc,
   onSnapshot,
   query,
+  serverTimestamp,
   setDoc,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
+import { taskActions } from "../contexts/task-context/task-actions";
 import { db } from "../firebase/firebase-config";
 
 export const getUserTasks = (userId, dispatch) => {
@@ -23,8 +26,14 @@ export const getUserTasks = (userId, dispatch) => {
         });
         const completedTasks = tasks.filter((task) => task.isCompleted);
         const pendingTasks = tasks.filter((task) => !task.isCompleted);
-        dispatch({ type: "GET_PENDING_TASKS", payload: pendingTasks });
-        dispatch({ type: "GET_COMPLETED_TASKS", payload: completedTasks });
+        dispatch({
+          type: taskActions.GET_PENDING_TASKS,
+          payload: pendingTasks,
+        });
+        dispatch({
+          type: taskActions.GET_COMPLETED_TASKS,
+          payload: completedTasks,
+        });
       });
     });
     return unsubscribe;
@@ -43,6 +52,7 @@ export const addTask = async (userId, currTaskState) => {
       longBreak: Number(currTaskState.longBreak),
       isCompleted: Boolean(false),
       isPinned: Boolean(currTaskState.isPinned),
+      createdTime: serverTimestamp(),
     });
     toast.success(`New Task Added Successfully`);
   } catch (e) {
@@ -50,11 +60,21 @@ export const addTask = async (userId, currTaskState) => {
   }
 };
 
-export const deleteTask = async (userId, taskId, dispatch) => {
+export const deleteTask = async (
+  userId,
+  taskId,
+  dispatch,
+  isCompleted,
+  isPending
+) => {
   try {
     const collectionRef = collection(db, `userData/${userId}/tasks`);
     const docRef = doc(collectionRef, taskId);
     await deleteDoc(docRef);
+    isPending &&
+      dispatch({ type: taskActions.DELETE_PENDING_TASK, payload: taskId });
+    isCompleted &&
+      dispatch({ type: taskActions.DELETE_COMPLETED_TASK, payload: taskId });
     toast.success(`Deleted Task Successfully`);
   } catch (error) {
     toast.error(error);
@@ -66,13 +86,11 @@ export const updateTask = async (userId, task) => {
     const collectionRef = collection(db, `userData/${userId}/tasks`);
     const docRef = doc(collectionRef, task.taskId);
     setDoc(docRef, {
-      taskName: task.taskName,
-      taskDescription: task.taskDescription,
-      taskDuration: task.taskDuration,
-      longBreak: task.longBreak,
-      shortBreak: task.shortBreak,
-      isCompleted: false,
-      isPinned: task.isPinned,
+      ...task,
+      taskDuration: Number(task.taskDuration),
+      longBreak: Number(task.longBreak),
+      shortBreak: Number(task.shortBreak),
+      updatedOn: serverTimestamp(),
     });
     toast.success("Updated Task Successfully");
   } catch (error) {
@@ -86,7 +104,7 @@ export const pinTaskHandler = async (userId, task) => {
     const docRef = doc(collectionRef, task.taskId);
     setDoc(docRef, {
       ...task,
-      isPinned: !task.isPinned,
+      isPinned: Boolean(!task.isPinned),
     });
     toast.success(
       `${
@@ -97,5 +115,47 @@ export const pinTaskHandler = async (userId, task) => {
     );
   } catch (error) {
     toast.error(error);
+  }
+};
+
+export const getSingleTask = async (userId, taskId, taskDispatch) => {
+  try {
+    taskDispatch({ type: taskActions.SINGLE_TASK_LOADING, payload: true });
+    const collectionRef = collection(db, `userData/${userId}/tasks`);
+    const docRef = doc(collectionRef, taskId);
+    const docSnap = await getDoc(docRef);
+    taskDispatch({ type: taskActions.SINGLE_TASK_LOADING, payload: false });
+    if (docSnap.exists()) {
+      const currentTask = docSnap.data();
+      const currentId = docSnap.id;
+      taskDispatch({
+        type: taskActions.SINGLE_TASK,
+        payload: { ...currentTask, taskId: currentId },
+      });
+    } else {
+      toast.error("Doesn't seem there is not them, but you can ever felt that");
+    }
+  } catch (error) {
+    taskDispatch({ type: taskActions.SINGLE_TASK_LOADING, payload: false });
+    toast.error(error);
+  }
+};
+
+export const completeTaskHandler = async (userId, task, isCompleted) => {
+  try {
+    const collectionRef = collection(db, `userData/${userId}/tasks`);
+    const docRef = doc(collectionRef, task.taskId);
+    setDoc(docRef, {
+      ...task,
+      isCompleted: Boolean(isCompleted),
+      completedOn: isCompleted ? serverTimestamp() : null,
+    });
+    toast.success(
+      `${
+        isCompleted ? "Completed Task Successfully" : "Task not completed yet"
+      }`
+    );
+  } catch (error) {
+    toast.error("Could not complete the action");
   }
 };

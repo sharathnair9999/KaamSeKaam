@@ -2,7 +2,7 @@ import React from "react";
 import "./TaskContainer.css";
 import TaskItem from "./TaskItem";
 
-const TaskContainer = ({ tasks, isCompleted }) => {
+const TaskContainer = ({ tasks, isCompleted, isPending }) => {
   const pinnedTasks = tasks.filter((task) => task.isPinned);
   const unpinnedTasks = tasks.filter((task) => !task.isPinned);
 
@@ -18,6 +18,7 @@ const TaskContainer = ({ tasks, isCompleted }) => {
             key={task.taskId}
             sNo={id + 1}
             isCompleted={isCompleted}
+            isPending={isPending}
             task={task}
           />
         ))}
@@ -26,6 +27,7 @@ const TaskContainer = ({ tasks, isCompleted }) => {
             key={task.taskId}
             sNo={id + pinnedTasks.length + 1}
             isCompleted={isCompleted}
+            isPending={isPending}
             task={task}
           />
         ))}
