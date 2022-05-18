@@ -33,6 +33,7 @@
   padding: 8px 12px;
   box-shadow: 2px 2px 3px 0 var(--box-shadow-1);
   background: linear-gradient(45deg, var(--white-100), var(--gray-2));
+  cursor: grab;
 }
 
 .task-item:hover {
