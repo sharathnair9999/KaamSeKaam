@@ -5,8 +5,12 @@ import { toast } from "react-toastify";
 import "./Timer.css";
 import { AiFillPauseCircle, AiFillPlayCircle } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
+import { useAudio } from "../../custom-hooks";
 
 const Timer = ({ totalDuration, longBreak, shortBreak, setTaskCompleted }) => {
+  const [, toggle] = useAudio("/single-click.wav");
+  const [, toggleError] = useAudio("/error-click.wav");
+  const [, toggleClap] = useAudio("/clap.wav");
   const [minutes, setMinutes] = useState(totalDuration);
   const [seconds, setSeconds] = useState(0);
   const [totalSeconds, setTotalSeconds] = useState(totalDuration * 60);
@@ -18,6 +22,7 @@ const Timer = ({ totalDuration, longBreak, shortBreak, setTaskCompleted }) => {
   const [longBreakSeconds, setLongBreakSeconds] = useState(longBreak * 60);
 
   const startTimer = () => {
+      toggle();
       setIsPaused((state) => !state);
     },
     getRemaingTime = () =>
@@ -40,6 +45,7 @@ const Timer = ({ totalDuration, longBreak, shortBreak, setTaskCompleted }) => {
         setMinutes(shortBreak);
         setSeconds(0);
       } else {
+        toggleError();
         toast.warn(
           "You need to complete 25% of the task to take a short break"
         );
@@ -54,6 +60,7 @@ const Timer = ({ totalDuration, longBreak, shortBreak, setTaskCompleted }) => {
         setMinutes(longBreak);
         setSeconds(0);
       } else {
+        toggleError();
         toast.warn(
           "You need to complete half of the task to take a long break"
         );
@@ -78,6 +85,7 @@ const Timer = ({ totalDuration, longBreak, shortBreak, setTaskCompleted }) => {
           if (minutes === 0) {
             clearInterval(myInterval);
             setTaskCompleted(true);
+            toggleClap();
           } else {
             setMinutes(minutes - 1);
             setSeconds(59);
