@@ -9,7 +9,7 @@ import {
 } from "react-icons/bs";
 import { Link } from "react-router-dom";
 import { BiLogIn } from "react-icons/bi";
-import { FcGoogle } from "react-icons/fc";
+import { FaUserSecret } from "react-icons/fa";
 
 const Landing = () => {
   return (
@@ -56,7 +56,8 @@ const Landing = () => {
                 All your tasks and corresponding details are private to you
               </li>
               <li>
-                Login, Signup , Sign In w/ <FcGoogle />{" "}
+                Login with credentials, Login Anonymously
+                <FaUserSecret />, Signup
               </li>
               <li>Distinguish Completed and Yet to Complete Tasks</li>
             </ul>

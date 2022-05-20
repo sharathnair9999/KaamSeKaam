@@ -15,8 +15,7 @@ import { Draggable } from "react-beautiful-dnd";
 
 const TaskItem = ({ index, task, sNo, isCompleted, isPending }) => {
   const navigate = useNavigate();
-  const { ref, isComponentVisible, setIsComponentVisible } =
-    useClickOutside(false);
+  const { isComponentVisible, setIsComponentVisible } = useClickOutside(false);
   const {
     userState: { uid },
   } = useAuth();

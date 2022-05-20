@@ -1,3 +1,3 @@
 import useClickOutside from "./useClickOutside";
-
-export { useClickOutside };
+import { useAudio } from "./useAudio";
+export { useClickOutside, useAudio };
