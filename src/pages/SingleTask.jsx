@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
 import { Confetti, SideHeadingText, Timer, UserInfo } from "../components";
 import { useAuth, useTask } from "../contexts";
-import { completeTaskHandler, getSingleTask } from "../services";
+import { completeTaskHandler, getSingleTask, deleteTask } from "../services";
 
 const SingleTask = () => {
   const {
     taskDispatch,
     taskState: { currentTask, isLoading },
   } = useTask();
+
+  const navigate = useNavigate();
 
   const { taskId } = useParams();
   const [taskCompleted, setTaskCompleted] = useState(currentTask.taskCompleted);
@@ -28,7 +30,7 @@ const SingleTask = () => {
   useEffect(() => {
     getSingleTask(uid, taskId, taskDispatch);
     taskCompleted && completeTaskHandler(uid, currentTask, true);
-  }, [taskCompleted]);
+  }, [taskCompleted, currentTask?.updatedOn?.seconds]);
 
   useEffect(() => {
     taskCompleted && setShowConfetti(true);
@@ -36,6 +38,11 @@ const SingleTask = () => {
       setShowConfetti(false);
     }, 2000);
   }, [taskCompleted]);
+
+  const deleteTaskHandler = () => {
+    deleteTask(uid, taskId, taskDispatch, currentTask.isCompleted);
+    navigate(-1, { replace: true });
+  };
 
   return (
     <div>
@@ -47,14 +54,35 @@ const SingleTask = () => {
           </div>
         ) : (
           <div className="single-task-container p-sm">
-            <Timer
-              totalDuration={Number(currentTask.taskDuration)}
-              longBreak={currentTask.longBreak}
-              shortBreak={currentTask.shortBreak}
-              setTaskCompleted={setTaskCompleted}
-            />
+            {!currentTask.isCompleted && (
+              <Timer
+                totalDuration={Number(currentTask.taskDuration)}
+                longBreak={currentTask.longBreak}
+                shortBreak={currentTask.shortBreak}
+                setTaskCompleted={setTaskCompleted}
+                isCompleted={currentTask.isCompleted}
+              />
+            )}
             <div className="task-details-container">
               <div className="flex justify-fs items-fs flex-col gap-1">
+                <section className="flex-and-center gap-1">
+                  {currentTask.isCompleted && (
+                    <button
+                      onClick={() =>
+                        completeTaskHandler(uid, currentTask, false)
+                      }
+                      className="btn-secondary btn"
+                    >
+                      Move To Pending Tasks
+                    </button>
+                  )}
+                  <button
+                    onClick={deleteTaskHandler}
+                    className="btn-danger btn"
+                  >
+                    Delete Task
+                  </button>
+                </section>
                 <SideHeadingText
                   largeText
                   text={currentTask.taskName}
