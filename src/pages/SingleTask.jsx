@@ -40,7 +40,13 @@ const SingleTask = () => {
   }, [taskCompleted]);
 
   const deleteTaskHandler = () => {
-    deleteTask(uid, taskId, taskDispatch, currentTask.isCompleted);
+    deleteTask(
+      uid,
+      taskId,
+      taskDispatch,
+      currentTask.isCompleted,
+      !currentTask.isCompleted
+    );
     navigate(-1, { replace: true });
   };
 
