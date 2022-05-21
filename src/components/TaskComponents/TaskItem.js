@@ -12,6 +12,7 @@ import { deleteTask, pinTaskHandler } from "../../services";
 import { useAuth } from "../../contexts/user-context/user-context";
 import { useTask } from "../../contexts";
 import { Draggable } from "react-beautiful-dnd";
+import { taskActions } from "../../contexts/task-context/task-actions";
 
 const TaskItem = ({ index, task, sNo, isCompleted, isPending }) => {
   const navigate = useNavigate();
@@ -39,7 +40,13 @@ const TaskItem = ({ index, task, sNo, isCompleted, isPending }) => {
         >
           <span className="serial-no">{sNo}</span>
           <section
-            onClick={() => navigate(`/tasks/${task.taskId}`)}
+            onClick={() => {
+              navigate(`/tasks/${task.taskId}`);
+              taskDispatch({
+                type: taskActions.SINGLE_TASK,
+                payload: { ...task },
+              });
+            }}
             className="task-text"
           >
             <p className="task-title">{task.taskName}</p>
