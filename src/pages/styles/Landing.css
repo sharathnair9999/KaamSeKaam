@@ -72,7 +72,7 @@
   height: 100vh;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
 }
 
@@ -94,7 +94,7 @@
   align-items: flex-start;
   flex-direction: column;
   gap: 1rem;
-  font-size: 1.3rem;
+  font-size: 1.2rem;
 }
 
 .footer {
@@ -122,14 +122,17 @@
   .landing-content-1 img {
     max-width: 300px;
   }
-  .signup-btn {
+   .landing-content-1 .signup-btn {
     padding: 5px 10px;
     font-size: 0.8rem;
     top: 1rem;
-    right: 0.5rem;
+    right:1rem;
   }
   .landing-content-2 img {
     max-width: 300px;
+  }
+  .features {
+    padding: 10px;
   }
   .features ul {
     gap: 10px;

@@ -7,7 +7,13 @@ import { AiFillPauseCircle, AiFillPlayCircle } from "react-icons/ai";
 import { BiReset } from "react-icons/bi";
 import { useAudio } from "../../custom-hooks";
 
-const Timer = ({ totalDuration, longBreak, shortBreak, setTaskCompleted }) => {
+const Timer = ({
+  totalDuration,
+  longBreak,
+  shortBreak,
+  setTaskCompleted,
+  isCompleted,
+}) => {
   const [, toggle] = useAudio("/single-click.wav");
   const [, toggleError] = useAudio("/error-click.wav");
   const [, toggleClap] = useAudio("/clap.wav");
@@ -20,6 +26,12 @@ const Timer = ({ totalDuration, longBreak, shortBreak, setTaskCompleted }) => {
   const [shortBreakSeconds, setShortBreakSeconds] = useState(shortBreak * 60);
   const [inLongBreak, setInLongBreak] = useState(false);
   const [longBreakSeconds, setLongBreakSeconds] = useState(longBreak * 60);
+
+  useEffect(() => {
+    setMinutes(totalDuration);
+    setTotalSeconds(totalDuration * 60);
+    setShortBreakSeconds(shortBreakSeconds * 60);
+  }, [totalDuration, longBreak, shortBreak, isCompleted]);
 
   const startTimer = () => {
       toggle();

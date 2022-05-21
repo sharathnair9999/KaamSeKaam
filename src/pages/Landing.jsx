@@ -46,11 +46,13 @@ const Landing = () => {
         </a>
       </div>
       <div className="landing-content-2" id="details">
-        <section className="flex justify-center items-center wrap my-auto">
+        <section className="flex justify-fs items-center wrap my-auto">
           <section className="features">
-            <p className="py-1 bold font-xl">Features: </p>
+            <p className="py-sm bold font-xl">Features: </p>
             <ul>
               <li>Add Update and Delete Tasks at ease</li>
+              <li>Drag and Drop Tasks between Completed and Pending Tasks.</li>
+
               <li>Timer to start a Task and Finish it</li>
               <li>
                 All your tasks and corresponding details are private to you
@@ -60,6 +62,13 @@ const Landing = () => {
                 <FaUserSecret />, Signup
               </li>
               <li>Distinguish Completed and Yet to Complete Tasks</li>
+              <li>
+                To your comfort you can drag and drop tasks between completed
+                and pending queue
+              </li>
+              <li>
+                As an addition we cheer for you when you complete each task
+              </li>
             </ul>
           </section>
           <img

@@ -3,7 +3,6 @@ import {
   collection,
   deleteDoc,
   doc,
-  getDoc,
   onSnapshot,
   query,
   serverTimestamp,
@@ -121,20 +120,18 @@ export const pinTaskHandler = async (userId, task) => {
 export const getSingleTask = async (userId, taskId, taskDispatch) => {
   try {
     taskDispatch({ type: taskActions.SINGLE_TASK_LOADING, payload: true });
-    const collectionRef = collection(db, `userData/${userId}/tasks`);
-    const docRef = doc(collectionRef, taskId);
-    const docSnap = await getDoc(docRef);
+    const unsubscribe = onSnapshot(
+      doc(db, `userData/${userId}/tasks/${taskId}`),
+      (doc) => {
+        const data = doc.data();
+        taskDispatch({
+          type: taskActions.SINGLE_TASK,
+          payload: { ...data },
+        });
+      }
+    );
     taskDispatch({ type: taskActions.SINGLE_TASK_LOADING, payload: false });
-    if (docSnap.exists()) {
-      const currentTask = docSnap.data();
-      const currentId = docSnap.id;
-      taskDispatch({
-        type: taskActions.SINGLE_TASK,
-        payload: { ...currentTask, taskId: currentId },
-      });
-    } else {
-      toast.error("Doesn't seem there is not them, but you can ever felt that");
-    }
+    return unsubscribe;
   } catch (error) {
     taskDispatch({ type: taskActions.SINGLE_TASK_LOADING, payload: false });
     toast.error(error);

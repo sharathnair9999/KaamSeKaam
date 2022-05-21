@@ -33,9 +33,9 @@
 
 .single-task-container {
   display: flex;
-  justify-content: space-around;
+  justify-content: center;
   align-items: flex-start;
-  gap: 2rem;
+  gap: 5rem;
   flex-wrap: wrap;
 }
 
@@ -68,4 +68,11 @@
 .instructions ul li {
   line-height: 1.3rem;
   font-size: 1.1rem;
+}
+
+
+@media screen and (max-width:768px) {
+  .single-task-container{
+    gap: 1rem;
+  }
 }

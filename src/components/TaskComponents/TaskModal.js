@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { InputField } from "../../components";
 import { useAuth } from "../../contexts/user-context/user-context";
 import { onChange } from "../../helpers";
@@ -23,6 +23,9 @@ const TaskModal = ({
 
   const initialTaskState = existingTask ? task : newTask;
   const [currTaskState, setCurrTaskState] = useState(initialTaskState);
+  useEffect(() => {
+    task && setCurrTaskState(task);
+  }, [task?.updatedOn?.seconds]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
