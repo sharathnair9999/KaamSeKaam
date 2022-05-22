@@ -1,7 +1,7 @@
 import React from "react";
 import { Navigate, Route, Routes, useLocation } from "react-router-dom";
 import { useAuth } from "../contexts/user-context/user-context";
-import { Landing, Login, Signup, SingleTask, Tasks } from "../pages";
+import { ErrorPage, Landing, Login, Signup, SingleTask, Tasks } from "../pages";
 
 const RedirectLoggedInUser = ({ children }) => {
   const { userState } = useAuth();
@@ -66,6 +66,7 @@ const AllRoutes = () => {
           </RedirectLoggedInUser>
         }
       />
+      <Route path="*" element={<ErrorPage />} />
     </Routes>
   );
 };
