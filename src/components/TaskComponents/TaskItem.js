@@ -38,7 +38,6 @@ const TaskItem = ({ index, task, sNo, isCompleted, isPending }) => {
           ref={provided.innerRef}
           className="task-item"
         >
-          <span className="serial-no">{sNo}</span>
           <section
             onClick={() => {
               navigate(`/tasks/${task.taskId}`);
