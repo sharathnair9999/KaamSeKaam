@@ -122,11 +122,18 @@
   .landing-content-1 img {
     max-width: 300px;
   }
-   .landing-content-1 .signup-btn {
+   .landing-content-1 .signup-btn{
     padding: 5px 10px;
     font-size: 0.8rem;
     top: 1rem;
     right:1rem;
+  }
+
+  .signup-btn{
+    font-size: 0.8rem;
+    padding: 4px 8px;
+    gap: 2px;
+    white-space: nowrap;
   }
   .landing-content-2 img {
     max-width: 300px;

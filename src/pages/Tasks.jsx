@@ -34,8 +34,8 @@ const Tasks = () => {
           onClick={() => setIsComponentVisible(!isComponentVisible)}
           className="add-task btn flex-and-center gap-sm"
         >
-          <span>Add New Task</span>
-          <IoIosAddCircleOutline size={"2rem"} />
+          <span>New Task</span>
+          <IoIosAddCircleOutline />
         </button>
         <div className="all-tasks-container">
           <Droppable droppableId="pendingTasks">
