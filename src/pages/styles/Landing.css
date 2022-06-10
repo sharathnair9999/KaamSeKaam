@@ -1,5 +1,6 @@
 .landing-content-1 {
   height: 100vh;
+  position: relative;
   color: var(--white-100);
 }
 
@@ -36,7 +37,6 @@
   right: auto;
   bottom: 20px;
 }
-
 .signup-btn {
   background-color: var(--gradient-color-2);
   padding: 8px 16px;
@@ -122,14 +122,14 @@
   .landing-content-1 img {
     max-width: 300px;
   }
-   .landing-content-1 .signup-btn{
+  .landing-content-1 .signup-btn {
     padding: 5px 10px;
     font-size: 0.8rem;
     top: 1rem;
-    right:1rem;
+    right: 1rem;
   }
 
-  .signup-btn{
+  .signup-btn {
     font-size: 0.8rem;
     padding: 4px 8px;
     gap: 2px;
