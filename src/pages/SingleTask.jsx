@@ -28,8 +28,11 @@ const SingleTask = () => {
   ).toLocaleString();
 
   useEffect(() => {
-    getSingleTask(uid, taskId, taskDispatch);
-    taskCompleted && completeTaskHandler(uid, currentTask, true);
+    (async () => {
+      getSingleTask(uid, taskId, taskDispatch);
+      taskCompleted &&
+        (await completeTaskHandler(uid, currentTask, taskId, true));
+    })();
   }, [taskCompleted, currentTask?.updatedOn?.seconds]);
 
   useEffect(() => {
@@ -74,8 +77,13 @@ const SingleTask = () => {
                 <section className="flex-and-center gap-1">
                   {currentTask.isCompleted && (
                     <button
-                      onClick={() =>
-                        completeTaskHandler(uid, currentTask, false)
+                      onClick={async () =>
+                        await completeTaskHandler(
+                          uid,
+                          currentTask,
+                          taskId,
+                          false
+                        )
                       }
                       className="btn-secondary btn"
                     >

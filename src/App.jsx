@@ -30,6 +30,7 @@ const App = () => {
       taskToMove,
       pTasks = pendingTasks,
       cTasks = completedTasks;
+    console.log(pendingTasks);
 
     if (source.droppableId === "pendingTasks") {
       taskToMove = pendingTasks.find((task) => task.taskId === draggableId);
@@ -52,6 +53,7 @@ const App = () => {
     completeTaskHandler(
       uid,
       taskToMove,
+      taskToMove.taskId,
       destination.droppableId === "pendingTasks" ? false : true
     );
   };

@@ -12,6 +12,7 @@ export const signInUser = async (e, setLoader, setUser, credentials) => {
   e.preventDefault();
   setLoader(true);
   try {
+    console.log(credentials);
     const {
       user: { displayName, photoURL, email, uid },
     } = await signInWithEmailAndPassword(

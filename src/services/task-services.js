@@ -7,6 +7,7 @@ import {
   query,
   serverTimestamp,
   setDoc,
+  updateDoc,
 } from "firebase/firestore";
 import { toast } from "react-toastify";
 import { taskActions } from "../contexts/task-context/task-actions";
@@ -138,13 +139,19 @@ export const getSingleTask = async (userId, taskId, taskDispatch) => {
   }
 };
 
-export const completeTaskHandler = async (userId, task, isCompleted) => {
+export const completeTaskHandler = async (
+  userId,
+  task,
+  taskId,
+  isCompleted
+) => {
   try {
+    console.log(userId, task, isCompleted);
     const collectionRef = collection(db, `userData/${userId}/tasks`);
-    const docRef = doc(collectionRef, task.taskId);
-    setDoc(docRef, {
+    const docRef = doc(collectionRef, taskId);
+    await updateDoc(docRef, {
       ...task,
-      isCompleted: Boolean(isCompleted),
+      isCompleted: isCompleted,
       completedOn: isCompleted ? serverTimestamp() : null,
     });
     toast.success(

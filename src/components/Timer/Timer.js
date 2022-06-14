@@ -105,11 +105,6 @@ const Timer = ({
         }
         setTotalSeconds((state) => state - 1);
       }, 1000);
-
-      return () => {
-        document.title = "Kaam Se Kaam";
-        clearInterval(myInterval);
-      };
     }
     if (inShortBreak) {
       let myInterval = setInterval(() => {
@@ -126,11 +121,6 @@ const Timer = ({
         }
         setShortBreakSeconds((state) => state - 1);
       }, 1000);
-
-      return () => {
-        document.title = "Kaam Se Kaam";
-        clearInterval(myInterval);
-      };
     }
     if (inLongBreak) {
       let myInterval = setInterval(() => {

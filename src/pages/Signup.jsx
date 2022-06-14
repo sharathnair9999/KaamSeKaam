@@ -23,6 +23,7 @@ const Signup = () => {
 
   const signUpUser = (e) => {
     e.preventDefault();
+    console.log(credentials);
     if (!credentials.photoURL) {
       toast.warn("Select an Avatar to proceed");
       return;
@@ -32,20 +33,15 @@ const Signup = () => {
       return;
     }
     setIsLoading(true);
+    console.log(auth);
     createUserWithEmailAndPassword(
       auth,
       credentials.email,
       credentials.password
     )
-      .then(
-        ({
-          user: {
-            auth: { currentUser },
-          },
-        }) => {
-          return currentUser;
-        }
-      )
+      .then((user) => {
+        return user.user;
+      })
       .then((user) =>
         updateProfile(user, {
           displayName: credentials.displayName,
@@ -60,6 +56,7 @@ const Signup = () => {
       })
       .catch((error) => {
         setIsLoading(false);
+        console.log(error.message);
         toast.error(error.message.split(" ").slice(1, -1).join(" "));
       });
   };
