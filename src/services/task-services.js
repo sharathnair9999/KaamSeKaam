@@ -146,7 +146,6 @@ export const completeTaskHandler = async (
   isCompleted
 ) => {
   try {
-    console.log(userId, task, isCompleted);
     const collectionRef = collection(db, `userData/${userId}/tasks`);
     const docRef = doc(collectionRef, taskId);
     await updateDoc(docRef, {
