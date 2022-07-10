@@ -37,8 +37,11 @@ const Timer = ({
       toggle();
       setIsPaused((state) => !state);
     },
-    getRemaingTime = () =>
-      `${minutes} : ${seconds < 10 ? `0${seconds}` : seconds}`,
+    getRemaingTime = (totalSeconds) => {
+      const minutes = Math.floor(totalSeconds / 60);
+      const seconds = totalSeconds % 60;
+      return `${minutes} : ${seconds < 10 ? `0${seconds}` : seconds}`;
+    },
     resetTimer = () => {
       inShortBreak && setMinutes(longBreak);
       inLongBreak && setMinutes(shortBreak);
@@ -87,25 +90,31 @@ const Timer = ({
     };
 
   useEffect(() => {
-    document.title = `${getRemaingTime()} | Kaam Se Kaam`;
+    let myInterval;
     if (!isPaused) {
-      let myInterval = setInterval(() => {
+      document.title = `${getRemaingTime(totalSeconds)} | Kaam Se Kaam`;
+      myInterval = setInterval(() => {
         if (seconds > 0) {
           setSeconds(seconds - 1);
-        }
-        if (seconds === 0) {
-          if (minutes === 0) {
-            clearInterval(myInterval);
-            setTaskCompleted(true);
-            toggleClap();
-          } else {
-            setMinutes(minutes - 1);
-            setSeconds(59);
-          }
+        } else {
+          setMinutes(minutes - 1);
+          setSeconds(59);
         }
         setTotalSeconds((state) => state - 1);
       }, 1000);
+    } else {
+      clearInterval(myInterval);
     }
+    return () => {
+      clearInterval(myInterval);
+      if (totalSeconds === 0) {
+        setTaskCompleted(true);
+        toggleClap();
+      }
+    };
+  }, [totalSeconds, isPaused]);
+
+  useEffect(() => {
     if (inShortBreak) {
       let myInterval = setInterval(() => {
         if (seconds > 0) {
@@ -193,7 +202,7 @@ const Timer = ({
               ? longBreak * 60 - longBreakSeconds
               : totalDuration * 60 - totalSeconds
           }
-          text={getRemaingTime()}
+          text={getRemaingTime(totalSeconds)}
           strokeWidth={7}
         />
       </div>
