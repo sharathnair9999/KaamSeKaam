@@ -30,7 +30,7 @@ const Timer = ({
   useEffect(() => {
     setMinutes(totalDuration);
     setTotalSeconds(totalDuration * 60);
-    setShortBreakSeconds(shortBreakSeconds * 60);
+    setShortBreakSeconds((shortBreakSeconds) => shortBreakSeconds * 60);
   }, [totalDuration, longBreak, shortBreak, isCompleted]);
 
   const startTimer = () => {
@@ -95,9 +95,9 @@ const Timer = ({
       document.title = `${getRemaingTime(totalSeconds)} | Kaam Se Kaam`;
       myInterval = setInterval(() => {
         if (seconds > 0) {
-          setSeconds(seconds - 1);
+          setSeconds((seconds) => seconds - 1);
         } else {
-          setMinutes(minutes - 1);
+          setMinutes((minutes) => minutes - 1);
           setSeconds(59);
         }
         setTotalSeconds((state) => state - 1);
@@ -107,7 +107,7 @@ const Timer = ({
     }
     return () => {
       clearInterval(myInterval);
-      if (totalSeconds === 0) {
+      if (totalSeconds <= 1) {
         setTaskCompleted(true);
         toggleClap();
       }

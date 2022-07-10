@@ -33,6 +33,9 @@ const SingleTask = () => {
       taskCompleted &&
         (await completeTaskHandler(uid, currentTask, taskId, true));
     })();
+    return () => {
+      document.title = "Kaam Se Kaam";
+    };
   }, [taskCompleted, currentTask?.updatedOn?.seconds]);
 
   useEffect(() => {
